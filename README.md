@@ -3,4 +3,4 @@
 Unscented Kalman Filter to estimate the state of multiple cars on a highway using noisy lidar and radar measurements.
 
 ## Status
-Project skeleton with build configuration and base data structures.
+UKF class header defined.

@@ -1,0 +1,9 @@
+# Handle text files automatically and normalize line endings to LF on commit
+* text=auto
+
+# Explicitly declare files that must always use LF (recommended for scripts/configs)
+*.sh text eol=lf
+*.bash text eol=lf
+*.json text
+*.js text
+*.ts text

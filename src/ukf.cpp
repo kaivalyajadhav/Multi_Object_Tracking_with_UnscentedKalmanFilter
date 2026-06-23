@@ -75,7 +75,11 @@ void UKF::ProcessMeasurement(MeasurementPackage meas_package) {
 
   Prediction(dt);
 
-  // stub: update steps will be added in future snapshots
+  if (meas_package.sensor_type_ == MeasurementPackage::LASER && use_laser_) {
+    UpdateLidar(meas_package);
+  } else if (meas_package.sensor_type_ == MeasurementPackage::RADAR && use_radar_) {
+    // stub: radar update will be implemented in next snapshot
+  }
 }
 
 void UKF::Prediction(double delta_t) {
@@ -156,7 +160,27 @@ void UKF::Prediction(double delta_t) {
 }
 
 void UKF::UpdateLidar(MeasurementPackage meas_package) {
-  // stub: not yet implemented
+  int n_z = 2;
+
+  MatrixXd H = MatrixXd(n_z, n_x_);
+  H.setZero();
+  H(0, 0) = 1;
+  H(1, 1) = 1;
+
+  MatrixXd R = MatrixXd(n_z, n_z);
+  R << std_laspx_ * std_laspx_, 0,
+       0, std_laspy_ * std_laspy_;
+
+  VectorXd z = meas_package.raw_measurements_;
+  VectorXd z_pred = H * x_;
+  VectorXd y = z - z_pred;
+  MatrixXd Ht = H.transpose();
+  MatrixXd S = H * P_ * Ht + R;
+  MatrixXd K = P_ * Ht * S.inverse();
+
+  x_ = x_ + K * y;
+  MatrixXd I = MatrixXd::Identity(n_x_, n_x_);
+  P_ = (I - K * H) * P_;
 }
 
 void UKF::UpdateRadar(MeasurementPackage meas_package) {

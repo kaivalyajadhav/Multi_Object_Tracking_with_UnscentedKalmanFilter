@@ -3,4 +3,4 @@
 Unscented Kalman Filter to estimate the state of multiple cars on a highway using noisy lidar and radar measurements.
 
 ## Status
-UKF constructor and initialization logic implemented. Prediction and update methods are stubs.
+UKF prediction step implemented (sigma point generation, state prediction, covariance prediction).
